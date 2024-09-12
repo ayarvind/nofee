@@ -18,7 +18,7 @@ export async function getAllProject(req: Request, res: Response) {
                 Provider:true,
             }
         });
-        console.log(projects)
+        // console.log(projects)
         res.status(200).json(projects);
 
     } catch (error: any) {

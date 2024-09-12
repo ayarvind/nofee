@@ -12,8 +12,8 @@ sendSmtpEmail.sender = { "name": "Arvind", "email": "ayarvind9812@gmail.com" };
 sendSmtpEmail.to = [
   { "email": "ayarvind9812@gmail.com", "name": "Arvind Yadav" }
 ];
-sendSmtpEmail.headers = { "Some-Custom-Name": "unique-id-1234" };
-sendSmtpEmail.params = { "parameter": "My param value", "subject": "common subject" };
+// sendSmtpEmail.headers = { "Some-Custom-Name": "unique-id-1234" };
+// sendSmtpEmail.params = { "parameter": "My param value", "subject": "common subject" };
 
 
 apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {

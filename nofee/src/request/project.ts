@@ -30,11 +30,11 @@ export async function createProject(payload: { name: string; description: string
 
 export async function getAllProjects() {
     try {
-        console.log(generateApiEndpoint('/project'))
+        // console.log(generateApiEndpoint('/project'))
         const response = await axios.get(generateApiEndpoint('/project'), {
             headers
         });
-        console.log(response.data)
+        // console.log(response.data)
 
         // Process the response data
         const projects = response.data;

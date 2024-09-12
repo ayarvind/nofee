@@ -30,7 +30,7 @@ function Sidebar({ project }: { project?: Project }) {
     ];
 
     return (
-        <div className="w-64 h-[70%] overflow-y-auto ml-3 rounded-lg bg-slate-950 text-gray-200 p-6 shadow-lg border-r border-gray-700">
+        <div className="w-64 h-[80%] overflow-y-auto ml-3 rounded-lg bg-slate-950 text-gray-200 p-6 shadow-lg border-r border-gray-700">
             <div className="mb-6 flex items-center">
                 <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center text-gray-200">
                 <h3 className="text-2xl font-bold ml-4 text-center">{project?.name[0] || 'P'}</h3>

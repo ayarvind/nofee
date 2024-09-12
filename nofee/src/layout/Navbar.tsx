@@ -66,15 +66,7 @@ function Navbar() {
                         <a className='text-white font-semibold hover:bg-blue-950 pt-2 pr-4 pl-4 pb-2 rounded transition-all' href="/docs">Docs</a>
                     </li>
 
-                    <li>
-                        {
-                            user ? (
-                                <a className='text-white font-semibold hover:bg-blue-950 pt-2 pr-4 pl-4 pb-2 rounded transition-all' href="javascript:void(0)" onClick={logout}>Logout</a>
-                            ) : (
-                                <a className='text-white font-semibold hover:bg-blue-950 pt-2 pr-4 pl-4 pb-2 rounded transition-all' href="/login">Login</a>
-                            )
-                        }
-                    </li>
+                    
 
                     <li>
                         <a className='text-white font-semibold hover:bg-blue-950 pt-2 pr-4 pl-4 pb-2 rounded transition-all' href="/docs">Register</a>
