@@ -52,7 +52,7 @@ model Provider {
   credentials Json
   projectId   String
   project     Project      @relation(fields: [projectId], references: [id])
-}
+} 
 
 model Logs {
   id             String   @id @default(cuid())

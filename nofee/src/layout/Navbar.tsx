@@ -65,7 +65,17 @@ function Navbar() {
                     <li>
                         <a className='text-white font-semibold hover:bg-blue-950 pt-2 pr-4 pl-4 pb-2 rounded transition-all' href="/docs">Docs</a>
                     </li>
-
+                    {/* {
+                        user ? (<>
+                             <li>
+                                <a className='text-white font-semibold hover:bg-blue-950 pt-2 pr-4 pl-4 pb-2 rounded transition-all' href="/logout">Logout</a>
+                            </li>
+                        </>):<>
+                            <li>
+                                <a className='text-white font-semibold hover:bg-blue-950 pt-2 pr-4 pl-4 pb-2 rounded transition-all' href="/login">Login</a>
+                            </li>
+                        </>
+                    } */}
                     
 
                     <li>
