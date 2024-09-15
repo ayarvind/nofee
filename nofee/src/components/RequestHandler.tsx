@@ -1,10 +1,10 @@
 import React from 'react';
 import ProviderList from '@/components/dashbaord/notification/ProviderList';
 import AccessToken from './dashbaord/notification/AccessToken';
-
+import Settings from './dashbaord/Settings';
 export const routes: { [key: string]: JSX.Element } = {
     'providers': <ProviderList />,
-    'access-token' : <AccessToken/>
+    'access-token' : <AccessToken/>,
 }
 
 function RequestHandler({ requestName }: { requestName: string }) {

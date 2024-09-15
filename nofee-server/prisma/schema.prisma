@@ -23,7 +23,6 @@ model Project {
   name        String
   description String
   ownerId     String
-  accessToken String
   status      Status
   owner       User       @relation(fields: [ownerId], references: [id])
   createdAt   DateTime   @default(now())

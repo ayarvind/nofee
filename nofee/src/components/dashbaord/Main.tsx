@@ -34,7 +34,7 @@ function Main() {
     };
 
     fetch_();
-  }, [projects, dispatch]);
+  }, [projects]);
 
   return (
     <div>

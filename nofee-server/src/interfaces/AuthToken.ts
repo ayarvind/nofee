@@ -5,3 +5,8 @@ export default interface AuthToken {
     image ?: string;
     id?: string;
 }
+
+export  interface AccessToken extends AuthToken {
+    projectId: string;
+    // expires?: number;
+}

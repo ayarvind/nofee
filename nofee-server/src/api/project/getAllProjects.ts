@@ -14,7 +14,6 @@ export async function getAllProject(req: Request, res: Response) {
                 name:true,
                 description:true,
                 ownerId:true,
-                accessToken:true,
                 Provider:true,
             }
         });

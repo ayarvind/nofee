@@ -8,6 +8,7 @@ function Sidebar({ project }: { project?: Project }) {
         'Providers',
         'Access Token',
         'Logs',
+        'Settings',
         // Add other project-specific menu items here
     ];
 
