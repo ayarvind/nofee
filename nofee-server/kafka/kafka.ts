@@ -6,6 +6,9 @@ export interface KafkaTopics{
     replicationFactor:number
 
 }
+
+
+
 const kafka = new Kafka({
     clientId: 'nofee-server',
     brokers: process.env.KAFKA_BROKERS?.split(',') || ['localhost:9092'],
