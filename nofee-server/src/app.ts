@@ -11,10 +11,18 @@ app.use(helmet());
 const corsOptions = {
     origin: process.env.CORS_ORIGIN,
 }
+
+
+
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(middlewares.isAuthenticated);
 app.use('/api/v1', api);
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
+
+
+
+
 export default app;

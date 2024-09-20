@@ -1,8 +1,8 @@
 import kafka from "../kafka";
 
-export async function produce(payload:any){
+export async function produce(payload: any) {
     const topicName = payload?.topic;
-    const producer =  kafka.producer();
+    const producer = kafka.producer();
     try {
         await producer.connect();
         await producer.send({
@@ -12,7 +12,7 @@ export async function produce(payload:any){
             ]
         });
     } catch (error) {
-        console.error('Error producing:', error);
+        throw error;
     } finally {
         await producer.disconnect();
     }

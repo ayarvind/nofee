@@ -30,7 +30,7 @@ export async function send(request: Request, response: Response) {
         const providerData = await prisma.provider.findFirst({
             where: {
                 projectId: projectId,
-                name: provider.charAt(0).toUpperCase() + provider.slice(1) 
+                name: provider.charAt(0).toUpperCase() + provider.slice(1)
             }
         });
 
@@ -45,7 +45,7 @@ export async function send(request: Request, response: Response) {
             projectId,
             userId: user.id,
             provider: {
-                name: providerData.name,     
+                name: providerData.name,
                 type: providerData.type,
                 credentials: providerData.credentials
             }
@@ -53,7 +53,6 @@ export async function send(request: Request, response: Response) {
 
         // Produce Kafka message
         await kafkaProduce(notificationPayload);
-        console.log("Notification scheduled");
 
         // Return success response
         return response.status(200).json({ message: "Notification scheduled successfully" });
