@@ -4,6 +4,9 @@ import helmet from 'helmet';
 import cors from 'cors';
 import * as middlewares from './middlewares';
 import api from './api';
+import WebSocket from 'ws';
+import run from '../kafka/consumers/notification-status'
+
 require('dotenv').config();
 const app = express();
 app.use(morgan('dev'));
@@ -13,15 +16,13 @@ const corsOptions = {
 }
 
 
-
-
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(middlewares.isAuthenticated);
 app.use('/api/v1', api);
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
-
+run().catch(console.error);
 
 
 

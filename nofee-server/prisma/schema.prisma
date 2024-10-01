@@ -19,16 +19,17 @@ model User {
 }
 
 model Project {
-  id          String     @id @default(cuid())
-  name        String
-  description String
-  ownerId     String
-  status      Status
-  owner       User       @relation(fields: [ownerId], references: [id])
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  Provider    Provider[]
-  Logs        Logs[]
+  id           String         @id @default(cuid())
+  name         String
+  description  String
+  ownerId      String
+  status       Status
+  owner        User           @relation(fields: [ownerId], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Provider     Provider[]
+  Logs         Logs[]
+  Notification Notification[]
 
   @@index([ownerId], name: "ownerId")
 }
@@ -51,7 +52,7 @@ model Provider {
   credentials Json
   projectId   String
   project     Project      @relation(fields: [projectId], references: [id])
-} 
+}
 
 model Logs {
   id             String   @id @default(cuid())
@@ -63,4 +64,14 @@ model Logs {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   project        Project  @relation(fields: [projectId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  projectId String
+  payload   Json
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project   Project  @relation(fields: [projectId], references: [id])
 }
