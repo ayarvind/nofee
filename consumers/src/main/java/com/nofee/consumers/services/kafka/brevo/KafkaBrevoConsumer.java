@@ -1,3 +1,4 @@
+package com.nofee.consumers.services.kafka.brevo;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
