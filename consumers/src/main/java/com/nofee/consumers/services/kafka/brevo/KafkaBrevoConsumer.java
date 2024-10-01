@@ -1,4 +1,5 @@
 package com.nofee.consumers.services.kafka.brevo;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,27 +41,33 @@ public class KafkaBrevoConsumer {
 
     @KafkaListener(topics = "notification.brevo", groupId = "${kafka.groupId}", containerFactory = "kafkaListenerContainerFactory")
     public void consume(String message, Acknowledgment acknowledgment) throws JSONException {
-        JSONObject jsonObject = new JSONObject(message);
-        String apiKey = jsonObject.getJSONObject("provider")
-                .getJSONObject("credentials")
-                .getString("apiKey");
-        JSONObject payload = jsonObject.getJSONObject("payload");
 
-        // Make API request
-        ApiRequest apiRequest = new ApiRequest(brevoEdgeFunction, apiKey, payload);
-        JSONObject response = apiRequest.post();
+        try {
+            JSONObject jsonObject = new JSONObject(message);
+            String apiKey = jsonObject.getJSONObject("provider")
+                    .getJSONObject("credentials")
+                    .getString("apiKey");
+            JSONObject payload = jsonObject.getJSONObject("payload");
 
-        // Check the response status
-        if (response.getString("status").equals("success")) {
-            // Acknowledge the message if notification is sent successfully
-            acknowledgment.acknowledge();
-            System.out.println("Message acknowledged: " + message);
+            // Make API request
+            ApiRequest apiRequest = new ApiRequest(brevoEdgeFunction, apiKey, payload);
+            JSONObject response = apiRequest.post();
 
-            // Call handleNotification only after successful acknowledgment
-            handleNotification(message);
-        } else {
-            System.out.println("Failed to send notification: " + response.toString());
-            // Do not acknowledge the message on failure
+            // Check the response status
+            if (response.getString("status").equals("success")) {
+                // Acknowledge the message if notification is sent successfully
+                acknowledgment.acknowledge();
+                System.out.println("Message acknowledged: " + response);
+
+                // Call handleNotification only after successful acknowledgment
+                handleNotification(response.toString());
+            } else {
+                System.out.println("Failed to send notification: " + response.toString());
+                // Do not acknowledge the message on failure
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

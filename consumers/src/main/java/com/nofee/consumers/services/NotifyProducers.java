@@ -19,13 +19,19 @@ public class NotifyProducers {
     // Constructor injection to get the KafkaProducer bean
     @Autowired
     public NotifyProducers(Producer producerBean) throws JSONException {
-        this.producer = producerBean.getProducer();  
+        this.producer = producerBean.getProducer();
     }
 
     public void prepareMessage(String messageString) throws JSONException {
         // Prepare the payload
+        System.out.println(messageString);
         this.message = new JSONObject(messageString);
-        payload.put("notificationID", this.message.getString("notificationID"));
+        String notificationID = this.message
+                .getJSONObject("data")
+                .getJSONObject("config")
+                .getJSONObject("data")
+                .getString("notificationID");
+        payload.put("notificationID", notificationID);
         String status = this.message.getString("status").equals("success") ? "sent" : "failed";
         payload.put("status", status);
         System.out.println(payload);

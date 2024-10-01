@@ -72,6 +72,8 @@ export async function send(request: Request, response: Response) {
                     name: user.name,
                     email: user.email,
                 },
+                notificationID: notification.id
+
                 // apiKey: providerData.credentials.apiKey
             },
             topic: `notification.${provider}`,
@@ -82,18 +84,10 @@ export async function send(request: Request, response: Response) {
                 type: providerData.type,
                 credentials: providerData.credentials,
             },
-            notificationID: notification.id
         };
 
         // Produce Kafka message
         await kafkaProduce(notificationPayload);
-        if (!payload.schedule) {
-            const notification_status = notification.status;
-            if (notification_status == 'sent') {
-                return response.status(200).json({ message: "Notification sent successfully" });
-            }
-        }
-
         // Return success response
         return response.status(200).json({ message: "Notification scheduled successfully" });
 
