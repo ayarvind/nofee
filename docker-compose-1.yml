@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  # web:
+  #   build: ./nofee  
+  #   container_name: web_client
+  #   ports:
+  #     - "5173:5173"
+
+  # node_server:
+  #   build: ./nofee-server
+  #   container_name: node-server
+  #   ports:
+  #     - "5000:5000"
+  #   depends_on:
+  #     - kafka
+  #     - redis
+  #     - spring-server
+
+  # spring-server:
+  #   build: ./consumers 
+  #   container_name: spring-server
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - kafka
+
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    depends_on:
+      - zookeeper
+      - redis
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092 
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  zookeeper:
+    image: zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"

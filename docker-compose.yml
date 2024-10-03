@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -10,12 +11,54 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181 
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "9092"]
+      interval: 10s
+      retries: 5
 
   zookeeper:
     image: zookeeper:latest
     container_name: zookeeper
     ports:
       - "2181:2181"
-    
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 10s
+      retries: 5
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # node_server:
+  #   build: ./nofee-server
+  #   container_name: node-server
+  #   ports:
+  #     - "5000:5000"
+  #   depends_on:
+  #     - kafka
+  #     - redis
+  #     - spring-server
+
+  # spring-server:
+  #   build: ./consumers 
+  #   container_name: spring-server
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - kafka
+
+  # web:
+  #   build: ./nofee  
+  #   container_name: web_client
+  #   ports:
+  #     - "5173:5173"
+  #   depends_on:
+  #     - node_server

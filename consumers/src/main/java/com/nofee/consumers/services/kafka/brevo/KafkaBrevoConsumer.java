@@ -41,7 +41,7 @@ public class KafkaBrevoConsumer {
 
     @KafkaListener(topics = "notification.brevo", groupId = "${kafka.groupId}", containerFactory = "kafkaListenerContainerFactory")
     public void consume(String message, Acknowledgment acknowledgment) throws JSONException {
-
+        System.out.println("Consumed message: " + message);
         try {
             JSONObject jsonObject = new JSONObject(message);
             String apiKey = jsonObject.getJSONObject("provider")

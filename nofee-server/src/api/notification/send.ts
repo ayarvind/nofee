@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../prisma';
-import { produce as kafkaProduce } from '../../../kafka/producers/produce';
+import { scheduleNotification } from '../../bull';
 
 export async function send(request: Request, response: Response) {
     const user = request.body.user?.payload;
@@ -85,9 +85,8 @@ export async function send(request: Request, response: Response) {
                 credentials: providerData.credentials,
             },
         };
-
         // Produce Kafka message
-        await kafkaProduce(notificationPayload);
+        scheduleNotification(notificationPayload);
         // Return success response
         return response.status(200).json({ message: "Notification scheduled successfully" });
 
