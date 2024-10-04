@@ -21,7 +21,7 @@ export interface SlackNotificationPayload {
 // Common Payload Data (notificationID, schedule, etc.)
 export interface PayloadData {
     notificationID: string;
-    schedule?: Date;
+    schedule?: string;
     priority?: number;
 }
 

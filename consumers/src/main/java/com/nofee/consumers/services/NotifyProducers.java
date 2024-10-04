@@ -24,17 +24,14 @@ public class NotifyProducers {
 
     public void prepareMessage(String messageString) throws JSONException {
         // Prepare the payload
-        System.out.println(messageString);
+        // System.out.println(messageString);
         this.message = new JSONObject(messageString);
         String notificationID = this.message
-                .getJSONObject("data")
-                .getJSONObject("config")
-                .getJSONObject("data")
                 .getString("notificationID");
+        
         payload.put("notificationID", notificationID);
         String status = this.message.getString("status").equals("success") ? "sent" : "failed";
         payload.put("status", status);
-        System.out.println(payload);
     }
 
     public void notifyProducer() throws JSONException {

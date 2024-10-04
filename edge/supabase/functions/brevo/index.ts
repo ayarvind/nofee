@@ -13,7 +13,47 @@ interface EmailPayload {
   }[];
   subject: string;
   htmlContent: string;
+  notificationID: string;
 }
+
+// Helper function to validate email format
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// Helper function to validate payload
+const validatePayload = (payload: EmailPayload) => {
+  const { sender, to, subject, htmlContent, notificationID } = payload;
+
+  if (!sender || !sender.name || !isValidEmail(sender.email)) {
+    return { valid: false, message: "Invalid sender information" };
+  }
+
+  if (!Array.isArray(to) || to.length === 0) {
+    return { valid: false, message: "Recipient list cannot be empty" };
+  }
+
+  for (const recipient of to) {
+    if (!recipient.name || !isValidEmail(recipient.email)) {
+      return { valid: false, message: `Invalid recipient information for ${recipient.name || "unknown recipient"}` };
+    }
+  }
+
+  if (!subject || subject.trim() === "") {
+    return { valid: false, message: "Email subject cannot be empty" };
+  }
+
+  if (!htmlContent || htmlContent.trim() === "") {
+    return { valid: false, message: "Email content cannot be empty" };
+  }
+
+  if (!notificationID || notificationID.trim() === "") {
+    return { valid: false, message: "Notification ID is required" };
+  }
+
+  return { valid: true };
+};
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -35,6 +75,17 @@ Deno.serve(async (req: Request) => {
 
     // Parse the payload
     const payload = await req.json() as EmailPayload;
+    // Validate payload
+    const validation = validatePayload(payload);
+    if (!validation.valid) {
+      return new Response(
+        JSON.stringify({
+          status: 'error',
+          message: validation.message,
+        }),
+        { status: 400, headers: corsHeaders }
+      );
+    }
 
     // Make the request to Brevo API
     const data = await axiod.post("https://api.brevo.com/v3/smtp/email", payload, {
@@ -49,6 +100,7 @@ Deno.serve(async (req: Request) => {
       JSON.stringify({
         status: 'success',
         data: data,
+        notificationID: payload.notificationID
       }),
       { status: 200, headers: corsHeaders }
     );

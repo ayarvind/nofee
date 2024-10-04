@@ -7,8 +7,8 @@ import { NotificationPayload } from './interfaces/NotificationPayload';
 // Initialize the Bull Queue with proper error handling for environment variables
 export const scheduledQueue = new Bull('scheduled-notification', {
     redis: {
-        host: process.env.REDIS_HOST || '127.0.0.1', 
-        port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379, 
+        host: process.env.REDIS_HOST || '127.0.0.1',
+        port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
     },
 });
 
@@ -20,20 +20,38 @@ function validatePriority(priority: number) {
 }
 
 // Utility function to validate time
-function validateScheduledTime(scheduledTime: Date | undefined) {
+function validateScheduledTime(scheduledTime: number | undefined) {
     const currentTime = new Date().getTime();
-    const delay = new Date(scheduledTime || currentTime).getTime() - currentTime;
-    console.log(delay);
+    console.log("currentTime:", currentTime);
+
+    let delay = 0;
+    if(!scheduledTime){
+        scheduledTime = currentTime;
+    }
+    // Check if scheduledTime is provided and is a valid number
+    if (typeof scheduledTime === 'number' && !isNaN(scheduledTime)) {
+        const scheduledDate = new Date(scheduledTime); 
+        console.log("scheduledTime:", scheduledDate.getTime());
+
+        delay = scheduledDate.getTime() - currentTime;
+    } else {
+        throw new Error("Invalid scheduled time format. Must be a valid timestamp.");
+    }
+
+    console.log("Delay:", delay);
+
     if (delay < 0) {
         throw new Error("Invalid time format. Cannot schedule notifications in the past.");
     }
+
     return delay;
 }
 
 // Schedule Notification Function
 export async function scheduleNotification(message: NotificationPayload) {
-    const scheduledTime = message.payload?.schedule;  
-    console.log(scheduledTime)
+    const scheduledTimeString = message.payload?.schedule;
+    const scheduledTime = scheduledTimeString ? parseInt(scheduledTimeString, 10) : undefined;
+    console.log(scheduledTime);
     const priority = message.payload?.priority || 1;
 
     // Validate priority and scheduled time
@@ -44,8 +62,8 @@ export async function scheduleNotification(message: NotificationPayload) {
         await scheduledQueue.add(
             { message },
             {
-                delay, 
-                priority, 
+                delay,
+                priority,
                 removeOnComplete: true,
             }
         );
@@ -65,7 +83,6 @@ export function processNotification() {
             await kafkaProduce(message);
         } catch (error) {
             console.error('Error processing notification:', error);
-            // Consider adding retry logic here if needed
         }
     });
 }

@@ -71,9 +71,9 @@ export async function send(request: Request, response: Response) {
 
         // Schedule notification using Kafka
         try {
-            scheduleNotification(notificationPayload);
+            await scheduleNotification(notificationPayload); 
         } catch (error: any) {
-            console.error('Error scheduling notification:', error); // Log specific errors
+            console.error('Error scheduling notification:', error);
             return sendErrorResponse(response, 500, `Failed to schedule notification: ${error.message}`);
         }
 

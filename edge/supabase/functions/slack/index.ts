@@ -5,6 +5,7 @@ import { corsHeaders } from '../corsHeaders.ts';
 interface SlackPayload {
   text: string;
   channel: string;
+  notificationID: string;
 }
 
 Deno.serve(async (req: Request) => {
@@ -25,7 +26,6 @@ Deno.serve(async (req: Request) => {
     }
 
     const payload = await req.json() as SlackPayload;
-
     // Validate payload
     if (!payload.text || !payload.channel) {
       return new Response(
@@ -57,6 +57,7 @@ Deno.serve(async (req: Request) => {
     return new Response(
       JSON.stringify({
         status: 'success',
+        notificationID: payload.notificationID,
         data: response.data,
       }),
       { status: 200, headers: corsHeaders }

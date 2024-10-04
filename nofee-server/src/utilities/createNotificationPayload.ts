@@ -8,7 +8,7 @@ export function createNotificationPayload(payload: any, user: User, notification
         // Handle email notification payload
         notificationPayload = {
             subject: payload.subject,
-            htmlContent: payload.message,
+            htmlContent: payload.htmlContent,
             to: payload.to, 
             schedule:payload?.schedule,
             priority : payload?.priority,
