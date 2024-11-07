@@ -1,4 +1,4 @@
-# Nofy - Notification Infrastructure
+# Nofee - Notification Infrastructure
 
 This project provides a robust, scalable notification system designed to handle large volumes of notifications across multiple channels, such as Slack, Email (Brevo), and WhatsApp. It includes key features such as  queuing, scheduling, and retry mechanisms to manage traffic surges and maintain high availability.
 
@@ -24,7 +24,7 @@ This notification infrastructure is designed to:
 The architecture consists of several key components as outlined in the pipeline diagram:
 
 <!-- insert image -->
-![Nofy](./pipeline.png) 
+![Nofee](./pipeline.png) 
 
 
 
@@ -68,7 +68,7 @@ Here’s a detailed breakdown of the workflow illustrated in the diagram:
 
 
 <!-- preview -->
-![Nofy](./preview.png)
+![Nofee](./preview.png)
 
 ## Setup and Installation
 To set up this project, follow these steps:
